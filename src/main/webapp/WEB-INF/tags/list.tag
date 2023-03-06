@@ -3,13 +3,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ attribute name="category"%>
 <%@ attribute name="sort"%>
-
+<c:set var="productImgUrl" value="webapp/img/101/"/>
+<c:set var="boardImgUrl" value="webapp/img/201/"/>
 <!-- 전체 신상품(홈 페이지) 페이지에 직접 넣었음 -->
 <c:if test="${sort=='new'}">
 	<c:forEach var="v" items="${newPList}" begin="0" varStatus="status">
 		<div class="col-lg-3">
 			<a href="shopDetails.do?pNum=${v.pNum}">
-				<div class="categories__item set-bg" data-setbg="${v.imageName}">
+				<div class="categories__item set-bg" data-setbg="${productImgUrl}${v.imageName}">
 					<h5>${v.pName}</h5>
 				</div>
 			</a>
@@ -22,7 +23,7 @@
 	<c:forEach var="v" items="${popPList}" begin="0" end="14" varStatus="status">
 		<div class="col-lg-3 col-md-4 col-sm-6 mix ${v.category}">
 			<div class="featured__item">
-				<div class="featured__item__pic set-bg" data-setbg="${v.imageName}">
+				<div class="featured__item__pic set-bg" data-setbg="${productImgUrl}${v.imageName}">
 					<ul class="featured__item__pic__hover">
 						<li><a href="javascript:void(0);" onclick="javascript:insertCart(${v.pNum});">
 								<i class="fa fa-shopping-cart"></i>
@@ -49,7 +50,7 @@
 		<c:if test="${v.pDcPercent>0}">
 			<div class="col-lg-4">
 				<div class="product__discount__item">
-					<div class="product__discount__item__pic set-bg" data-setbg="${v.imageName}">
+					<div class="product__discount__item__pic set-bg" data-setbg="${productImgUrl}${v.imageName}">
 						<div class="product__discount__percent">-${v.pDcPercent}%</div>
 						<ul class="product__item__pic__hover">
 							<li><a href="javascript:void(0);" onclick="javascript:insertCart(${v.pNum});">
@@ -77,7 +78,7 @@
 	<c:forEach var="v" items="${pList}" begin="0" end="9" varStatus="status">
 		<div class="col-lg-3 col-md-4 col-sm-6">
 			<div class="product__item">
-				<div class="product__item__pic set-bg" data-setbg="${v.imageName}">
+				<div class="product__item__pic set-bg" data-setbg="${productImgUrl}${v.imageName}">
 					<ul class="product__item__pic__hover">
 						<li><a href="javascript:void(0);" onclick="javascript:insertCart(${v.pNum});">
 								<i class="fa fa-shopping-cart"></i>
@@ -137,7 +138,7 @@
 		<div class="col-lg-4 col-md-4 col-sm-4 show-board">
 			<div class="blog__item">
 				<div class="blog__item__pic">
-					<img src="img/${v.imageName}" alt="고양이 사진">
+					<img src="${boardImgUrl}${v.imageName}" alt="고양이 사진">
 				</div>
 				<div class="blog__item__text">
 					<ul>

@@ -155,7 +155,7 @@
                      <li class="active"><a href="main.do"><spring:message code="message.main.home"/></a></li>
                      <li><a href="shop.do?category=all&sort=sellDesc"><spring:message code="message.main.shopping"/></a></li>
                      <li><a href="contact.do">Contact</a></li>
-                     <li><a href="blog.do"><spring:message code="message.main.community"/></a></li>
+                     <li><a href="boardView.do"><spring:message code="message.main.community"/></a></li>
                   </ul>
                </nav>
             </div>

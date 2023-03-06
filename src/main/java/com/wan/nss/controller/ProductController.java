@@ -1,7 +1,10 @@
 package com.wan.nss.controller;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.wan.nss.biz.board.BoardService;
+import com.wan.nss.biz.board.BoardVO;
 import com.wan.nss.biz.common.Crawling;
 import com.wan.nss.biz.product.ProductService;
 import com.wan.nss.biz.product.ProductVO;
@@ -24,22 +29,25 @@ public class ProductController {
    @Autowired
    private ReviewService reviewService;
    @Autowired
+   private BoardService boardService;
+   @Autowired
    private Crawling crawling;
 
    // 멤버, 상품 
    @RequestMapping(value="/main.do")
-   public String mainView(ProductVO pvo, Model model) {
+   public String mainView(ProductVO pvo, Model model, HttpServletRequest request) {
       // 신상품 데이터. pvo : category == all, sort == regiDesc
       System.out.println("   로그: main.do");
       
-      // 크롤링
+   // 크롤링     
+      pvo.setCategory("all");
+      pvo.setSort("regiDesc");
+      
       if(productService.selectAll(pvo).size() < 48) {
-         crawling.sample();
+         crawling.sample(request);
       }
       
       // 전체 최신순(등록일순): category = all,  sort = regiDesc
-      pvo.setCategory("all");
-      pvo.setSort("regiDesc");
       pvo.setSearchLowPrice(0);
       pvo.setSearchHighPrice(1000000);	
       model.addAttribute("newPList", productService.selectAll(pvo)); 
@@ -107,16 +115,20 @@ public class ProductController {
 		return "product_manage_insert.jsp";
 	}
 
-	/* (관리자)상품 수정 기능: 해당 상품 관리 페이지에서 "수정" 버튼 클릭 시 실제 수정: model에는 있으나 view에는 아직 없음
+	//(관리자)상품 수정 기능: 해당 상품 관리 페이지에서 "수정" 버튼 클릭 시 실제 수정
 	@RequestMapping(value="/updateProduct.do", method=RequestMethod.POST)
 	public String updateProduct(ProductVO pvo, Model model,
 			HttpServletResponse response,HttpServletRequest request) {
 
+		/*
 		// 관리자 모드 : 해당 상품 관리 페이지에서 "수정" 버튼 클릭 시 실제 수정
 		System.out.println("updateProduct 입장");
 
+		//파일받기 (저장공간) > 초기세팅 (업로드 확인 > bvo.setFile(fileName);) > 본섭공간 저장 > 추가 실행
+		
 		// 각자 이미지 저장할 위치
 		String uploadDir = this.getClass().getResource("").getPath();
+		
 
 		System.out.println(uploadDir);
 
@@ -138,27 +150,31 @@ public class ProductController {
 		//new FileDAO().upload(fileName, fileName2);
 
 		//pvo.setpImgUrl("img/"+multipartRequest.getFilesystemName("img")); // 이미지 첨부파일인데.. 어떻게 하지 수정 필요!!!!
+		*/
+		boolean flag = productService.update(pvo);
 
-		pdao.update(pvo);
-
-		if (!productService.update(pvo)) { // 실패 시 알림창
+		if (!flag) { // 실패 시 알림창
+			try {
 			PrintWriter out = response.getWriter();
 			response.setContentType("text/html; charset=utf-8");
 			out.println("<SCRIPT>alert('ERROR : UPDATE 실패');</SCRIPT>");
-			//forward.setPath(null);
+			return "product_manage_datail.jsp";
+			}
+			catch(Exception e) {
+				System.out.println("실패 알람칭 띄우기 중 오류 발생");
+				e.printStackTrace();
+			}
 		}
-
 		return "redirect:product_manage.jsp";
+	}
 
-	}*/
-
-	//추후 보드까지 검색되게 수정 예정
 	@RequestMapping(value="/search.do")
-	public String selectAllProductSearch(ProductVO pvo,Model model) {
+	public String selectAllProductSearch(ProductVO pvo,BoardVO bvo,Model model) { 
 		System.out.println("searchCondition: "+pvo.getpSearchCondition());
 		System.out.println("searchContent: "+pvo.getpSearchContent());
 	
-		model.addAttribute("data",productService.selectAll(pvo)); 
+		model.addAttribute("pList",productService.selectAll(pvo)); //View님들 search.do의 data -> pList 로 변경 부탁드립니다.
+		model.addAttribute("bList",boardService.selectAll(bvo));
 	
 		return "search_result.jsp";
 	}

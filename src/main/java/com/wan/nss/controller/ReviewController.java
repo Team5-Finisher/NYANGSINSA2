@@ -74,10 +74,11 @@ public class ReviewController {
 		return "order_detail.jsp";
 	}
 	
-	// 내 리뷰 모아보기 페이지
-	@RequestMapping(value = "/myReviewView.do") // 관리자 페이지 리뷰 관리 페이지 열기
-	public String myReviewView() {
-		
+	// 내 리뷰 모아보기 페이지 
+	@RequestMapping(value = "/myReviewView.do") //View님들 myreview.do -> myReviewView.do로 수정 부탁드립니다
+	public String myReviewView(ReviewVO rvo,Model model) { 
+		model.addAttribute("rList", reviewService.selectAll(rvo));
+		return "myreview.jsp";
 	}
 
 	// (관리자)리뷰 삭제
@@ -86,7 +87,7 @@ public class ReviewController {
 			HttpServletResponse response, HttpServletRequest request) {
 		System.out.println("deleteReview 입장");
 
-		String id = (String)session.getAttribute("memberId");
+		String id = (String)session.getAttribute("userId");
 
 		try {
 			if (id == null || !(id.equals("admin"))) {

@@ -13,20 +13,16 @@ import org.springframework.stereotype.Repository;
 public class BoardDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
+
 	/*
 	 * C
 	 */
 	// 글 작성
 	private final String INSERT = "INSERT INTO BOARD (M_NO, B_TITLE, B_CONTENT) VALUES((SELECT M_NO FROM MEMBER WHERE M_ID = ?), ?, ?)";
 
-	// 이미지 insert - TYPE_NO = 201, 202, 203, ...
-//	private final String INSERT_IMG = "INSERT INTO IMAGE (TARGET_NO, TYPE_NO, I_NM) VALUES((SELECT B_NO FROM BOARD ORDER BY B_NO DESC LIMIT 1), ?, ?)";
-
 	/*
 	 * R
 	 */
-
 	// (사용자의 좋아요 여부 표시된) 삭제되지 않은 게시글 전체 가져오기
 	private final String SELECT_ALL = "SELECT b.*, COUNT(LK_NO) AS LIKE_CNT, COUNT(RE_NO) AS REPLY_CNT, IFNULL(i.I_NM, 'default.jpg') AS I_NM, IF(bl.M_NO = (SELECT M_NO FROM MEMBER WHERE M_ID = ?), TRUE, FALSE) AS ISCHECKED "
 			+ " FROM (SELECT b.*, m.M_ID FROM BOARD b INNER JOIN MEMBER m ON b.M_NO = m.M_NO WHERE STATUS != 3) b "
@@ -69,18 +65,21 @@ public class BoardDAO {
 	// 글 상세보기 + 작성자 id
 	// ? : 로그인한 아이디 or null, 선택한 글의 pk
 	private final String SELECT_ONE = "SELECT b.*, COUNT(LK_NO) AS LIKE_CNT, COUNT(RE_NO) AS REPLY_CNT, IF(bl.M_NO = (SELECT M_NO FROM MEMBER WHERE M_ID = ?), TRUE, FALSE) AS ISCHECKED "
-			+ " FROM (SELECT b.*, m.M_ID FROM BOARD b INNER JOIN MEMBER m ON b.M_NO = m.M_NO WHERE STATUS != 3 AND b.B_NO = ?) b "
-			+ " LEFT JOIN BLIKE bl ON b.B_NO = bl.B_NO LEFT JOIN REPLY r ON b.B_NO = r.B_NO GROUP BY bl.M_NO;";
+			+ " FROM (SELECT b.*, m.M_ID FROM BOARD b INNER JOIN MEMBER m ON b.M_NO = m.M_NO AND b.B_NO = ?) b "
+			+ " LEFT JOIN BLIKE bl ON b.B_NO = bl.B_NO LEFT JOIN REPLY r ON b.B_NO = r.B_NO GROUP BY bl.M_NO";
 
+	// 가장 최근에 추가한 board
+	private final String SELECT_ONE_NEWEST = "SELECT MAX(B_NO) FROM BOARD";
+	
 	/*
 	 * U
 	 */
 	// 관리자 모드 : 게시글 상태 변경 (1: 정상, 2: 신고, 3: 삭제)
-	private final String UPDATE_ADMIN = "UPDATE BOARD SET STATUS = ? WHERE B_NO = ?;";
+	private final String UPDATE_ADMIN = "UPDATE BOARD SET STATUS = ? WHERE B_NO = ?";
 	// 회원 : 게시글 수정
 	private final String UPDATE = "UPDATE BOARD SET B_TITLE = ?, B_CONTENT = ?, B_DATE = CURTIME() WHERE B_NO = ?";
 	// 게시글 조회수 +1
-	private final String UPDATE_VIEWS = "UPDATE BOARD SET B_VIEW = B_VIEW + 1 WHERE B_NO = ?;";
+	private final String UPDATE_VIEWS = "UPDATE BOARD SET B_VIEW = B_VIEW + 1 WHERE B_NO = ?";
 
 	/*
 	 * D
@@ -125,8 +124,19 @@ public class BoardDAO {
 
 	public BoardVO selectOne(BoardVO vo) {
 		/* 주의 : 로그인 했을 경우 BoardVO의 userId에 '현재 로그인한 멤버의 아이디'를 세팅해주세요. */
-		// TODO : 가장 최근에 만들어진 게시글의 B_NO 가져오는 selectOne 만들기
+
+		// 1. 상세보기 : pNum만 세팅
+		if ("newest".equals(vo.getSearchCondition())) {
+			// 2. 가장 최근에 등록된 상품 번호 보기 (이미지 insert 할 때)
+			// pSearchCondition = "newest"
+			return jdbcTemplate.queryForObject(SELECT_ONE_NEWEST, (rs, rowNum) -> {
+				BoardVO data = new BoardVO();
+				data.setBoardNum(rs.getInt("B_NO"));
+				return data;
+			});
+		}
 		return jdbcTemplate.queryForObject(SELECT_ONE, new BoardRowMapper(), vo.getUserId(), vo.getBoardNum());
+
 	}
 
 	public ArrayList<BoardVO> selectAll(BoardVO vo) {
@@ -134,7 +144,7 @@ public class BoardDAO {
 
 		if (vo.getSearchCondition() == null) { // 1. 글 전체 보기
 			// 로그인 안 한 경우 전체 좋아요가 false로 나옴
-			return (ArrayList<BoardVO>) jdbcTemplate.query(SELECT_ALL, new BoardRowMapper(), vo.getUserId());
+			return (ArrayList<BoardVO>) jdbcTemplate.query(SELECT_ALL, new BoardRowMapper(), vo.getUserId(), vo.getUserId());
 
 		} else if (vo.getSearchCondition().equals("top3")) { // 2. 전체 3등보기
 			return (ArrayList<BoardVO>) jdbcTemplate.query(SELECT_ALL_TOP3, (rs, rowNum) -> {
@@ -147,7 +157,7 @@ public class BoardDAO {
 				data.setImageName(rs.getString("I_NM"));
 				return data;
 			});
-			
+
 		} else if (vo.getSearchContent() != null) { // 3. 글 검색
 			if (vo.getSearchCondition().equals("title")) { // 제목 검색
 				return (ArrayList<BoardVO>) jdbcTemplate.query(SELECT_ALL_SEARCH_TITLE, new BoardRowMapper(),
@@ -185,8 +195,6 @@ class BoardRowMapper implements RowMapper<BoardVO> {
 		data.setImageName(rs.getString("I_NM")); // 대표 이미지 이름
 		data.setChecked(rs.getBoolean("ISCHECKED")); // 좋아요 여부
 		data.setReplyCnt(rs.getInt("REPLY_CNT")); // 댓글 수
-		// ArrayList<String> imageNames // selectOne 할 때 사진들 이름 넣어줄
-//		data.setCatName(rs.getString("CAT_NM"));
 		return data;
 	}
 }

@@ -10,7 +10,16 @@ public class ReviewVO {
 	
 	private String rSearchCondition; // 검색..어.. 
 	private String userId; // 회원 아이디
+	private String pName; // 상품 이름
 	
+	
+	
+	public String getpName() {
+		return pName;
+	}
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
 	public int getrNum() {
 		return rNum;
 	}

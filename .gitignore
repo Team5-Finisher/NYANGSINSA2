@@ -51,3 +51,7 @@ applicationContext.xml
 
 # Spring
 .springBeans
+
+# img Files
+*/101/
+*/102/

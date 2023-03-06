@@ -182,7 +182,7 @@ public class ProductDAO {
 		} else if (pvo.getpSearchCondition().equals("newest")) {
 			// 2. 가장 최근에 등록된 상품 번호 보기 (이미지 insert 할 때)
 			// pSearchCondition = "newest"
-			return jdbcTemplate.queryForObject(SELECT_ONE_NEWEST, (rs, rowNum) -> {
+			return jdbcTemplate.queryForObject(SELECT_ONE_NEWEST, (rs, rowNum) -> { 
 				ProductVO data = new ProductVO();
 				data.setpNum(rs.getInt("P_NO"));
 				return data;

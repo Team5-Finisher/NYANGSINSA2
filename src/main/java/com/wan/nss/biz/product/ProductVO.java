@@ -18,6 +18,8 @@ public class ProductVO {
 	private String pSearchContent; // 검색.. 어.. 
 	private String sort; // 정렬 기준 구분 하기 위해 사용
 	private String imageName; // 대표 이미지
+	private String url; // 상품 상세 페이지 url
+	
 	public int getpNum() {
 		return pNum;
 	}
@@ -114,12 +116,19 @@ public class ProductVO {
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
 	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
 	@Override
 	public String toString() {
 		return "ProductVO [pNum=" + pNum + ", pName=" + pName + ", category=" + category + ", price=" + price
 				+ ", pAmt=" + pAmt + ", pDetail=" + pDetail + ", pDcPercent=" + pDcPercent + ", searchLowPrice="
 				+ searchLowPrice + ", searchHighPrice=" + searchHighPrice + ", total=" + total + ", dc_price="
 				+ dc_price + ", pCnt=" + pCnt + ", pSearchCondition=" + pSearchCondition + ", pSearchContent="
-				+ pSearchContent + ", sort=" + sort + ", imageName=" + imageName + "]";
+				+ pSearchContent + ", sort=" + sort + ", imageName=" + imageName + ", url=" + url + "]";
 	}
 }

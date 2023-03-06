@@ -17,11 +17,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public boolean update(OrderVO vo) {
-		return orderDAO.update(vo);
-	}
-
-	@Override
 	public boolean delete(OrderVO vo) {
 		return orderDAO.delete(vo);
 	}
