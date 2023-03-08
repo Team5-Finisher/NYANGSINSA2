@@ -321,6 +321,9 @@
 						<div class="product__details__price">
 							<fmt:formatNumber value="${pvo.dc_price}" pattern="#,###" />
 							원
+							<c:if test="${pvo.pDcPercent != 0}">
+								<span style="text-decoration: line-through; display: inline-block; color: #343a4057; font-size: 18px;"><fmt:formatNumber value="${pvo.price}" pattern="#,###" />원</span>
+							</c:if>
 						</div>
 
 						<p>${pvo.pDetail}</p>
@@ -479,7 +482,7 @@
          console.log('확인확인확인');
          $.ajax({ // ajax로 데이터 가져오기
             type: 'POST',
-            url: 'getCartCnt',
+            url: 'getCartCnt.do',
             success: function(data) {
                console.log("레디 data : "+data);
                let cartCnt = '';
@@ -493,6 +496,28 @@
             }
          })
       });
+      
+      function insertCart(pNum) {
+			console.log(pNum);
+			window.location.href = "insertCart.do?pNum=" + pNum;
+			setTimeout(function() {
+				$.ajax({ // ajax로 데이터 가져오기
+					type : 'POST',
+					url : 'getCartCnt.do',
+					success : function(data) {
+						console.log("data: " + data);
+						let cartCnt = '';
+						cartCnt += data; // 장바구니 상품 개수
+						console.log("cartCnt 새로고침: " + cartCnt);
+						$('#cartCnt').text(cartCnt);
+						$('#cartCnt2').text(cartCnt);
+					},
+					error : function() {
+						alert('error');
+					}
+				})
+			}, 300);
+		}
    </script>
 
 	<script type="text/javascript">
@@ -503,7 +528,7 @@
          setTimeout(function() {
             $.ajax({ // ajax로 데이터 가져오기
             type: 'POST',
-            url: 'getCartCnt',
+            url: 'getCartCnt.do',
             success: function(data) {
                let cartCnt = '';
                cartCnt += data; // 장바구니 상품 개수

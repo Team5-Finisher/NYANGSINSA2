@@ -30,7 +30,7 @@ function list(selectPage) {
  	
 	$.ajax({ // ajax로 데이터 가져오기
 		type: 'POST',
-		url: 'getAdminList',
+		url: 'getAdminList.do',
 		data: {part:part}, // part 담아서 AdminListController Servlet에 걸리게!
 		dataType: 'json',
 		traditional: 'true',

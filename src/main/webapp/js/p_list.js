@@ -100,8 +100,17 @@ function displayData(selectPage) {
 			chartHtml += "<div class='col-lg-4 col-md-6 col-sm-6'><div class='product__item'><div class='product__item__pic set-bg'>"
 				+ "<ul class='product__item__pic__hover'>"
 				+ "<li><a href='javascript:void(0);' onclick='javascript:insertCart(" + dataList[i].pNum + ");'><i class='fa fa-shopping-cart'></i></a></li></ul></div>"
-				+ "<div class='product__item__text'><h6><a href='shopDetails.do?pNum=" + dataList[i].pNum + "'>" + dataList[i].pName + "</a></h6>"
-				+ "<h5>" + dataList[i].dc_price.toLocaleString('ko-KR') + "원</h5></div></div></div>";
+				+ "<div class='product__item__text'>";
+
+			if (dataList[i].pDcPercent != 0) {
+				chartHtml += "<div class='product__discount__item__text' style = 'padding-top: 0px;'>"
+					+ "<h6><a href='shopDetails.do?pNum=" + dataList[i].pNum + "'>" + dataList[i].pName + "</a></h6><div class='product__item__price'>"
+					+ "<h5>" + dataList[i].dc_price.toLocaleString('ko-KR') + "원"
+					+ "<span>" + dataList[i].price.toLocaleString('ko-KR') + "원</span></h5></div></div></div></div></div>";
+			} else {
+				chartHtml += "<h6><a href='shopDetails.do?pNum=" + dataList[i].pNum + "'>" + dataList[i].pName + "</a></h6>"
+					+ "<h5>" + dataList[i].dc_price.toLocaleString('ko-KR') + "원</h5></div></div></div>";
+			}
 		}
 		$("#dataTableBody").html(chartHtml);
 

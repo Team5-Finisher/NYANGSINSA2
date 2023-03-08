@@ -23,6 +23,19 @@ public class CartController {
 	@Autowired
 	private ProductService productService;
 
+	// 장바구니 아이콘 수량 변경
+	@RequestMapping("/getCartCnt.do")
+	protected String getCartCnt(HttpSession session) {
+
+		int cartCnt = 0; // 장바구니 상품 개수
+		ArrayList<ProductVO> cList = (ArrayList) session.getAttribute("cList");
+		if (cList != null) { // 장바구니에 상품이 있을 때
+			cartCnt = cList.size();
+		}
+		System.out.println("CartCntController cartCnt: "+cartCnt);
+		return Integer.toString(cartCnt); // AJAX 요청 성공시 보내는 데이터
+	}
+	
 	// 장바구니 페이지로 이동
 	@RequestMapping(value="/shopingCart.do")
 	public String shopingCartView() {
@@ -33,7 +46,7 @@ public class CartController {
 		
 	}
 	
-	// 주문하기 페이지에서 결제 및 최종 주문 수행
+	// 장바구니에 상품 추가
 	@RequestMapping(value="/insertCart.do")
 	public void insertOrder(ProductVO pvo, Model model, HttpSession session, HttpServletResponse response) {
 		
@@ -85,7 +98,6 @@ public class CartController {
 			System.out.println(v.getpNum() + ": " + v.getpCnt() + "개");
 		}
 		
-		System.out.println("insertCart.do 종료");
 		try {
 			response.getWriter().println("<SCRIPT>history.go(-1)</SCRIPT>");
 		} catch (Exception e) {
@@ -114,7 +126,6 @@ public class CartController {
 		session.setAttribute("cList", cList);
 		System.out.println("로그: 갱신된 cList를 세션에 저장함!");
 
-		System.out.println("insertCart.do 종료");
 		try {
 			response.getWriter().println("<SCRIPT>history.go(-1)</SCRIPT>");
 		} catch (Exception e) {
@@ -191,8 +202,6 @@ public class CartController {
 		// ArrayList를 JsonArray 형식으로 변환
 		JsonArray datas = new Gson().toJsonTree(cList).getAsJsonArray(); // JsonArry로 변경하여 반환
 
-		System.out.println("updateCart.do 완료");
-		
 		return datas;
 		
 	}

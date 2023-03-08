@@ -319,7 +319,7 @@
 		$(document).ready(function() {
 			$.ajax({ // ajax로 데이터 가져오기
 				type : 'POST',
-				url : 'getCartCnt',
+				url : 'getCartCnt.do',
 				success : function(data) {
 					let cartCnt = '';
 					cartCnt += data; // 장바구니 상품 개수
@@ -339,7 +339,7 @@
 			setTimeout(function() {
 				$.ajax({ // ajax로 데이터 가져오기
 					type : 'POST',
-					url : 'getCartCnt',
+					url : 'getCartCnt.do',
 					success : function(data) {
 						console.log("data: " + data);
 						let cartCnt = '';

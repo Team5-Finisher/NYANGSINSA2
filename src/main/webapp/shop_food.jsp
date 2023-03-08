@@ -329,7 +329,7 @@
 
 			$.ajax({ // ajax로 데이터 가져오기
 				type : 'POST',
-				url : 'getCartCnt',
+				url : 'getCartCnt.do',
 				success : function(data) {
 					console.log("data: " + data);
 					let cartCnt = '';
@@ -351,7 +351,7 @@
 			setTimeout(function() {
 				$.ajax({ // ajax로 데이터 가져오기
 					type : 'POST',
-					url : 'getCartCnt',
+					url : 'getCartCnt.do',
 					success : function(data) {
 						console.log("data: " + data);
 						let cartCnt = '';

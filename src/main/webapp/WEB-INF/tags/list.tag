@@ -29,13 +29,18 @@
 					</ul>
 				</div>
 				<div class="featured__item__text">
-					<h6>
-						<a href="shopDetails.do?pNum=${v.pNum}">${v.pName}</a>
-					</h6>
-					<h5>
-						<fmt:formatNumber value="${v.dc_price}" pattern="#,###" />
-						원
-					</h5>
+					<div class="product__discount__item__text" style="padding-top: 0px;">
+						<h6>
+							<a href="shopDetails.do?pNum=${v.pNum}">${v.pName}</a>
+						</h6>
+						<div class="product__item__price">
+							<fmt:formatNumber value="${v.dc_price}" pattern="#,###" />
+							원
+							<c:if test="${v.pDcPercent != 0}">
+								<span><fmt:formatNumber value="${v.price}" pattern="#,###" />원</span>
+							</c:if>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -84,13 +89,18 @@
 					</ul>
 				</div>
 				<div class="product__item__text">
-					<h6>
-						<a href="shopDetails.do?pNum=${v.pNum}">${v.pName}</a>
-					</h6>
-					<h5>
-						<fmt:formatNumber value="${v.dc_price}" pattern="#,###" />
-						원
-					</h5>
+					<div class="product__discount__item__text" style="padding-top: 0px;">
+						<h6>
+							<a href="shopDetails.do?pNum=${v.pNum}">${v.pName}</a>
+						</h6>
+						<div class="product__item__price">
+							<fmt:formatNumber value="${v.dc_price}" pattern="#,###" />
+							원
+							<c:if test="${v.pDcPercent != 0}">
+								<span><fmt:formatNumber value="${v.price}" pattern="#,###" />원</span>
+							</c:if>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

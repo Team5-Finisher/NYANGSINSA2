@@ -97,7 +97,7 @@ font-family: SF Pro KR, SF Pro Display, SF Pro Icons, AOS Icons, Apple Gothic,
 	<div class="layerPopup" id="layer_popup" style="visibility: visible;">
 		<div class="layerBox" style="width: 400px;">
 			<!-- <h4 class="title">FineApple 공지사항</h4> -->
-			<a href="shopDetails.do?pNum=1016">
+			<a href="shopDetails.do?pNum=131">
 				<div class="cont">
 					<p>
 						<img src="img/layer_img.jpg" width=100% height=500 usemap="#popup" alt="event page">

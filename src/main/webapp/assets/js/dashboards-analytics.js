@@ -7,7 +7,7 @@ var yearDataBegin = 3; // 카테고리별 주문건수 데이터가 끝나고 �
 'use strict';
 $.ajax({ // ajax로 데이터 가져오기
 	type: 'POST',
-	url: 'donutChart',
+	url: 'getDonutChart.do',
 	dataType: 'json',
 	traditional: 'true',
 	contentType: "application/x-www-form-urlencoded; charset=UTF-8",

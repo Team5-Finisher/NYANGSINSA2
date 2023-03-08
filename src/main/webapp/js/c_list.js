@@ -17,6 +17,7 @@ function cList(pNumIn, actionIn) {
 		traditional: 'true',
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		success: function(data) {
+			setCartCnt();
 			let dataList = data;
 			let chartHtml = "";
 			let totalHtml = 0;
@@ -64,7 +65,7 @@ function setCartCnt() {
 		type: 'POST',
 		url: 'getCartCnt',
 		success: function(data) {
-			console.log("data" + data);
+			console.log("여기들어와data" + data);
 			let cartCnt = data; // 장바구니 상품 개수
 			$("#cartCnt").html(cartCnt);
 		},

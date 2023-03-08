@@ -102,7 +102,7 @@ public class BoardVO {
 		this.imageName = imageName;
 	}
 
-	public boolean isChecked() {
+	public boolean getIsChecked() {
 		return isChecked;
 	}
 

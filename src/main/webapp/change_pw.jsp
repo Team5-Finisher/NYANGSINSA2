@@ -102,7 +102,7 @@
       var id=$('#id').val(); // $('id 속성이 id인 요소')의 값을 불러올래!
       $.ajax({
          type: 'POST',
-         url: 'check',
+         url: 'checkDuplication.do',
          data: {id:id},
          success: function(result){
             if(result==1){

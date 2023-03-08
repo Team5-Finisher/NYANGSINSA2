@@ -33,7 +33,7 @@ function list(selectPage,part) {
  	
 	$.ajax({ // ajax로 데이터 가져오기
 		type: 'POST',
-		url: 'getAdminList',
+		url: 'getAdminList.do',
 		data: {part:part}, // category, sort 담아서 ListController Servlet에 걸리게!
 		dataType: 'json',
 		traditional: 'true',

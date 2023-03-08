@@ -79,22 +79,27 @@ public class MemberDAO {
 
 	 // 중복된 아이디가 있으면 true / 없으면 false
 	public MemberVO selectOne(MemberVO vo) {
-		if (vo.getUserId() != null) {
-			// 1. 회원가입 할 때 아이디 중복 확인 / vo에 memberId만 존재
-			// SELECETONE_ID
-			Object[] args = { vo.getUserId() };
-			return jdbcTemplate.queryForObject(SQL_SELECTONE_ID, args, new MemberRowMapper());
-		} else if (vo.getPhoneNum() != null) {
-			// 2. 회원가입 할 때 핸드폰 번호 확인 / vo에 phoneNum만 존재
-			// SELECETONE_PHONE
-			Object[] args = { vo.getPhoneNum() };
-			return jdbcTemplate.queryForObject(SQL_SELECTONE_PHONE, args, new MemberRowMapper());
-		} else {
-			// 로그인할 때 필요한 아이디, 비밀번호 입력
-			// SELECETONE
-			Object[] args = { vo.getUserId(), vo.getUserPw() };
-			return jdbcTemplate.queryForObject(SQL_SELECTONE, args, new MemberRowMapper());
-		}
+		try {
+			if (vo.getUserPw() != null) {
+				// 로그인할 때 필요한 아이디, 비밀번호 입력
+				// SELECETONE
+				Object[] args = { vo.getUserId(), vo.getUserPw() };
+				return jdbcTemplate.queryForObject(SQL_SELECTONE, args, new MemberRowMapper());
+			} else if (vo.getUserId() != null) {
+				// 1. 회원가입 할 때 아이디 중복 확인 / vo에 memberId만 존재
+				// SELECETONE_ID
+				Object[] args = { vo.getUserId() };
+				return jdbcTemplate.queryForObject(SQL_SELECTONE_ID, args, new MemberRowMapper());
+			} else if (vo.getPhoneNum() != null) {
+				// 2. 회원가입 할 때 핸드폰 번호 확인 / vo에 phoneNum만 존재
+				// SELECETONE_PHONE
+				Object[] args = { vo.getPhoneNum() };
+				return jdbcTemplate.queryForObject(SQL_SELECTONE_PHONE, args, new MemberRowMapper());
+			} 
+		} catch (Exception e) {
+				e.printStackTrace();
+			}
+		return null;
 	}
 
 	// 회원 ID, PW 찾기

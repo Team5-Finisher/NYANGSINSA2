@@ -299,7 +299,7 @@
          var id=$('#id').val(); // $('id 속성이 id인 요소')의 값을 불러올래!
          $.ajax({
             type: 'POST',
-            url: 'check',
+            url: 'checkDuplication.do',
             data: {id:id},
             success: function(result){
                console.log(result)
@@ -634,7 +634,7 @@ fetch("tos3.jsp") /*해당 경로의 내용 가져옴 */
       var phone=$('#phone').val(); // $('id 속성이 phone인 요소')의 값을 불러올래!
       $.ajax({
          type: 'POST',
-         url: 'check',
+         url: 'checkDuplication.do',
          data: {phone:phone},
            success: function(result){
               console.log("checkResult: "+result)

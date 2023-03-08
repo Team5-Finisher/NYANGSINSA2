@@ -59,7 +59,7 @@
 	<div class="humberger__menu__contact">
 		<ul>
 			<li><i class="fa fa-envelope"></i>nyangsinsa@gmail.com</li>
-			<li><spring:message code="message.header.title" />/li>
+			<li><spring:message code="message.header.title" /><li>
 		</ul>
 	</div>
 </div>

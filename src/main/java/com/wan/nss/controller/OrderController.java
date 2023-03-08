@@ -34,6 +34,8 @@ public class OrderController {
 	@RequestMapping(value="/buyProducts.do")
 	public String checkoutView(OrderVO vo, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
 		
+		System.out.println("buyProducts.do");
+		
 		String userId = (String) session.getAttribute("memberId");
 
 		response.setContentType("text/html; charset=utf-8");
@@ -69,63 +71,65 @@ public class OrderController {
 	}
 
 	// 주문하기 페이지에서 결제 및 최종 주문 수행
-	@RequestMapping(value="/insertOrder.do")
-	public String insertOrder(OrderVO ovo, OrderDetailVO odvo, ProductVO pvo, Model model, HttpSession session, HttpServletResponse response) {
-		
-				String userId = (String) session.getAttribute("memberId"); // 로그인 무조건 돼 있음
+	@RequestMapping(value = "/insertOrder.do")
+	public String insertOrder(OrderVO ovo, OrderDetailVO odvo, ProductVO pvo, Model model, HttpSession session,
+			HttpServletResponse response) {
 
-				// Order insert
+		System.out.println("insertOrder.do 진입");
 
-				if (!orderService.insert(ovo)) { // insert 에서 실패했다면
-					try {
-						response.setContentType("text/html; charset=utf-8");
-						response.getWriter()
-								.println("<script>alert('주문내역 생성 실패...관리자에게 문의하세요.');history.go(-1);</script>");
-						return "checkout.jsp";
-					} catch (Exception e) {
-						return null;
-					}
+		String userId = (String) session.getAttribute("memberId"); // 로그인 무조건 돼 있음
+
+		// Order insert
+
+		if (!orderService.insert(ovo)) { // insert 에서 실패했다면
+			try {
+				response.setContentType("text/html; charset=utf-8");
+				response.getWriter().println("<script>alert('주문내역 생성 실패...관리자에게 문의하세요.');history.go(-1);</script>");
+				return "checkout.jsp";
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		System.out.println("오더 인서트 성공");
+
+		// ovo insert 성공
+		// → odvo insert!
+
+		OrderVO thisOvo = orderService.selectOne(ovo); // 방금 추가한 ovo
+		// SELECT O_NO FROM ORDER_INFO WHERE USER_ID = ? ORDER BY O_NO DESC ;
+
+		ArrayList<ProductVO> cList = (ArrayList) session.getAttribute("cList"); // 장바구니에 담긴 상품들
+		if (cList == null) {
+			cList = new ArrayList<ProductVO>();
+		}
+		for (int i = 0; i < cList.size(); i++) {
+			orderDetailService.insert(odvo); // 주문 상세 내역 DB에 저장
+
+			// 장바구니에 있는 상품들의 pNum과 pCnt(개수)를 받아서
+			// DB 에 업데이트
+			pvo.setpNum(cList.get(i).getpNum());
+			pvo.setpCnt(cList.get(i).getpCnt());
+			if (!productService.update(pvo)) {
+				try {
+					response.setContentType("text/html; charset=utf-8");
+					response.getWriter().println("<SCRIPT>alert('ERROR : UPDATE 실패');</SCRIPT>");
+					return null;
+				} catch (Exception e) {
+					return null;
 				}
-				System.out.println("오더 인서트 성공");
+			}
+		}
 
-				// ovo insert 성공
-				// → odvo insert!
+		session.removeAttribute("cList"); // 장바구니 비우기
+		return "orderList.do";
 
-				OrderVO thisOvo = orderService.selectOne(ovo); // 방금 추가한 ovo
-				// SELECT O_NO FROM ORDER_INFO WHERE USER_ID = ? ORDER BY O_NO DESC ;
-
-				ArrayList<ProductVO> cList = (ArrayList)session.getAttribute("cList"); // 장바구니에 담긴 상품들
-				if (cList == null) {
-					cList = new ArrayList<ProductVO>();
-				}
-				for (int i = 0; i < cList.size(); i++) {
-					orderDetailService.insert(odvo); // 주문 상세 내역 DB에 저장
-
-					// 장바구니에 있는 상품들의 pNum과 pCnt(개수)를 받아서
-					// DB 에 업데이트
-					pvo.setpNum(cList.get(i).getpNum());
-					pvo.setpCnt(cList.get(i).getpCnt());
-					if (!productService.update(pvo)) {
-						try {
-							response.setContentType("text/html; charset=utf-8");
-							response.getWriter().println("<SCRIPT>alert('ERROR : UPDATE 실패');</SCRIPT>");
-							return null;
-						} catch (Exception e) {
-							return null;
-						}
-					}
-				}
-
-				session.removeAttribute("cList"); // 장바구니 비우기
-				return "orderList.do";
-		
 	}
 
 	// 주문 내역 페이지로 이동
 	@RequestMapping(value="/orderList.do")
 	public String selectAllOrderList(OrderVO vo, Model model, HttpSession session) {
 		
-		System.out.println("오더리스트액션 진입");
+		System.out.println("orderList.do 진입");
 
 		// 현재 로그인한 회원의 주문내역을 가져와야 함
 		String userId = (String) session.getAttribute("memberId");
@@ -153,6 +157,8 @@ public class OrderController {
 	// 주문 상세 내역 페이지로 이동
 	@RequestMapping(value="/orderDetailList.do")
 	public String selectAllOrderDetailList(OrderVO ovo, OrderDetailVO odvo, Model model) {
+		
+		System.out.println("orderDetailList.do 진입");
 		
 		odvo.setoNum(ovo.getoNum());
 		List<OrderDetailVO> odList = orderDetailService.selectAll(odvo); // 주문 번호가 oNum인 주문 상세 내역들

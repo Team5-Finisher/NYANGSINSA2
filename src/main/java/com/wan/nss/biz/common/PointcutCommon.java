@@ -5,6 +5,6 @@ import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
 public class PointcutCommon {
-	@Pointcut("execution(* com.wan.nss.controller..*Controller.*(..))")
+	@Pointcut("execution(* com.wan.nss.biz..*Impl.*(..))")
 	public void aPointcut() {} // 포인트컷 선언
 }
