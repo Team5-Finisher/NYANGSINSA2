@@ -322,25 +322,24 @@
 	<!-- 리스트세팅 -->
 	<script>
 		$(document).ready(function() {
-			list("all", "sellDesc", 1, 0, 100000);
-			$.when($.ajax("getList.do")).done(function() {
-
-				$.ajax({ // ajax로 데이터 가져오기
-					type : 'POST',
-					url : 'getCartCnt',
-					success : function(data) {
-						console.log("data: " + data);
-						let cartCnt = '';
-						cartCnt += data; // 장바구니 상품 개수
-						console.log("cartCnt 불러옴: " + cartCnt);
-						$('#cartCnt').text(cartCnt);
-						$('#cartCnt2').text(cartCnt);
-					},
-					error : function() {
-						alert('error');
-					}
-				})
+			list("food", "sellDesc", 1, 0, ${maxPrice});
+	
+			$.ajax({ // ajax로 데이터 가져오기
+				type : 'POST',
+				url : 'getCartCnt',
+				success : function(data) {
+					console.log("data: " + data);
+					let cartCnt = '';
+					cartCnt += data; // 장바구니 상품 개수
+					console.log("cartCnt 불러옴: " + cartCnt);
+					$('#cartCnt').text(cartCnt);
+					$('#cartCnt2').text(cartCnt);
+				},
+				error : function() {
+					alert('error');
+				}
 			})
+				
 		});
 
 		function insertCart(pNum) {

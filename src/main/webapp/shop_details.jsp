@@ -395,7 +395,7 @@
 								<div class="product__details__tab__desc" style="max-width: 100%; text-align: center;">
 									<p>
 										<img src="img/shopDetailLine.png" />
-										<img src="${pvo.url}" />
+										<img src="${pvo.imageName2}" />
 									</p>
 								</div>
 							</div>
