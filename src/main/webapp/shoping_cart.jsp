@@ -54,7 +54,7 @@
 		<div class="humberger__menu__cart">
 			<ul>
 				<li><a href="shopingCart.do">
-						<i class="fa fa-shopping-bag"></i> <span>${fn:length(cList)}</span>
+						<i class="fa fa-shopping-bag"></i> <span id="cartCnt2">${fn:length(cList)}</span>
 					</a></li>
 			</ul>
 		</div>
@@ -149,7 +149,7 @@
 					<div class="header__cart">
 						<ul>
 							<li><a href="shopingCart.do">
-									<i class="fa fa-shopping-bag"></i> <span>${fn:length(cList)}</span>
+									<i class="fa fa-shopping-bag"></i> <span id="cartCnt">${fn:length(cList)}</span>
 								</a></li>
 						</ul>
 					</div>
