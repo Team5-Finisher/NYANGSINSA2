@@ -24,6 +24,8 @@ public class ListController {
 	@RequestMapping(value="/getList.do")
 	public JsonArray sendList(ProductVO pvo, Model model) {
 		
+		System.out.println("getList.do 진입");
+		
 		System.out.println("ListController 실행 조건: ");
 		System.out.println("pSearchCondition: " + pvo.getpSearchCondition());
 		System.out.println("category: " + pvo.getCategory());
