@@ -199,7 +199,10 @@ public class MemberController {
 	// 로그인 수행
 	@RequestMapping(value = "/login.do", method=RequestMethod.POST)
 	public String selectOneMemberLogin(MemberVO vo, HttpSession session, HttpServletResponse response) {
-
+		
+		System.out.println("로그인하려는 회원 정보 ↓");
+		System.out.println(vo);
+		System.out.println();
 		MemberVO member = memberService.selectOne(vo);
 
 		if (member == null) { // 로그인 실패시

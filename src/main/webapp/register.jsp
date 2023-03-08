@@ -136,7 +136,7 @@
 
 							<!-- 아이디 -->
 							<div class="col-md-12 form-group">
-								<input type="text" style="width: 60%;" id="id" name="id" placeholder="&nbsp;<spring:message code="message.register.enterid"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.enterid"/>'" required>
+								<input type="text" style="width: 60%;" id="id" name="userId" placeholder="&nbsp;<spring:message code="message.register.enterid"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.enterid"/>'" required>
 								&nbsp;
 								<input style="color: white; border-radius: 7px; float: right;" type="button" id="idCheckBtn" onclick="checkId()" class="button button-register" value="<spring:message code="message.register.iddouble"/>">
 							</div>
@@ -147,7 +147,7 @@
 
 							<!-- 이름 -->
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="<spring:message code="message.register.entername"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.entername"/>'" required>
+								<input type="text" class="form-control" id="name" name="userName" placeholder="<spring:message code="message.register.entername"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.entername"/>'" required>
 							</div>
 							<p class="checkre" id="outputName">
 								<spring:message code="message.register.name" />
@@ -155,7 +155,7 @@
 
 							<!-- 고양이 이름 -->
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="cName" name="cName" placeholder="<spring:message code="message.register.entercatname"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.entercatname"/>'" required>
+								<input type="text" class="form-control" id="cName" name="catName" placeholder="<spring:message code="message.register.entercatname"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.entercatname"/>'" required>
 							</div>
 							<p class="checkre" id="outputcName">
 								<spring:message code="message.register.catname" />
@@ -163,7 +163,7 @@
 
 							<!-- 비밀번호 -->
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="password" name="password" placeholder="<spring:message code="message.register.enterpw"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.enterpw"/>'" required>
+								<input type="password" class="form-control" id="password" name="userPW" placeholder="<spring:message code="message.register.enterpw"/>" onfocus="this.placeholder = ''" onblur="this.placeholder = '<spring:message code="message.register.enterpw"/>'" required>
 							</div>
 							<p class="checkre" id="outputPw">
 								<spring:message code="message.register.enterpw" />
@@ -185,7 +185,7 @@
 
 							<!-- 전화 번호 -->
 							<div class="col-md-12 form-group">
-								<input type="tel" style="width: 65%;" id="phone" name="phone" placeholder="<spring:message code="message.register.phone"/>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+								<input type="tel" style="width: 65%;" id="phone" name="phoneNum" placeholder="<spring:message code="message.register.phone"/>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
 								<input type="button" class="button button-register" style="color: white; border-radius: 7px; float: right;" value="<spring:message code="message.register.getphone"/>" onclick="sms()">
 								<div style="text-align: left; padding: 0px;">
 									<p class="checkre" id="outputPhone">
@@ -202,12 +202,12 @@
 							<!-- 주소 -->
 							<div class="col-md-12 form-group">
 								<div>
-									<input type="text" style="width: 65%;" id="post" placeholder="<spring:message code="message.register.postal"/>" onclick="sample6_execDaumPostcode()" name="post" readonly>
+									<input type="text" style="width: 65%;" id="post" placeholder="<spring:message code="message.register.postal"/>" onclick="sample6_execDaumPostcode()" name="postNum" readonly>
 									<input type="button" style="color: white; border-radius: 7px;" class="button button-register" value="<spring:message code="message.register.findpostal"/>" onclick="sample6_execDaumPostcode()" readonly>
 								</div>
-								<input type="text" class="form-control" id="address" name="address" placeholder="<spring:message code="message.register.postal"/>" readonly>
+								<input type="text" class="form-control" id="address" name="address1" placeholder="<spring:message code="message.register.postal"/>" readonly>
 								<input type="text" class="form-control" id="address_plus" name="addressPlus" placeholder="<spring:message code="message.register.seealso"/>" readonly>
-								<input type="text" class="form-control" name="addressDetail" id="address_detail" placeholder="<spring:message code="message.register.detailaddress"/>" required>
+								<input type="text" class="form-control" id="address_detail" name="address2" placeholder="<spring:message code="message.register.detailaddress"/>" required>
 							</div>
 
 							<!-- 약관 동의 전체-->

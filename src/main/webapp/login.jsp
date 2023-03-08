@@ -58,10 +58,10 @@
 						<h3><spring:message code="message.login.logindo" /></h3>
 						<form class="row login_form" action="login.do" id="contactForm" method="POST">
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="id" name="id" placeholder="<spring:message code="message.login.id" />" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디 입력'" required>
+								<input type="text" class="form-control" id="id" name="userId" placeholder="<spring:message code="message.login.id" />" onfocus="this.placeholder = ''" onblur="this.placeholder = '아이디 입력'" required>
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="password" class="form-control" id="password" name="password" placeholder="<spring:message code="message.login.pw" />" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호 입력'" required>
+								<input type="password" class="form-control" id="password" name="userPw" placeholder="<spring:message code="message.login.pw" />" onfocus="this.placeholder = ''" onblur="this.placeholder = '비밀번호 입력'" required>
 							</div>
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="button button-login w-100"><spring:message code="message.login.login" /></button>

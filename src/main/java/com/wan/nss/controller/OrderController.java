@@ -41,7 +41,7 @@ public class OrderController {
 		if (userId == null) { // 로그인 안 돼 있으면 로그인 창으로 이동
 			try {
 				PrintWriter out = response.getWriter();
-				out.println("<script>alert('로그인이 필요합니다.');location.href='login.jsp';</script>");
+				out.println("<script>alert('로그인이 필요합니다.');location.href='login.do';</script>");
 				out.flush();
 				return "login.jsp";
 			} catch (Exception e) {

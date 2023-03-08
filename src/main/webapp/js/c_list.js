@@ -39,7 +39,7 @@ function cList(pNumIn, actionIn) {
 						+ "<input type='text' value='" + dataList[i].pCnt + "' style='width:50px; text-align:center;' readonly />"
 						+ "<input type='button' value='+'onclick='cList(" + dataList[i].pNum + ",`+`)'></button></div></td>"
 						+ "<td class='shoping__cart__total'>" + (dataList[i].dc_price * dataList[i].pCnt).toLocaleString('ko-KR') + "원</td>"
-						+ "<td class='shoping__cart__item__close'><a href = 'deleteCart.do?pNum=" + dataList[i].pNum + "'><span class='icon_close'></span></a></td>"
+						+ "<td class='shoping__cart__item__close'><a href='javascript:void(0);' onclick='cList(" + dataList[i].pNum + ",`delete`);'><span class='icon_close'></span></a></td>"
 						+ "</tr>";
 					totalHtml += dataList[i].dc_price * dataList[i].pCnt;
 				}

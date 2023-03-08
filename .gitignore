@@ -58,3 +58,5 @@ applicationContext.xml
 
 # Crawling
 Crawling.java
+src/main/java/com/wan/nss/biz/common/Crawling.java
+src/main/resources/applicationContext.xml
