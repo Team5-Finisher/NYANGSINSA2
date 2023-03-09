@@ -102,7 +102,7 @@ button img {
 									<p>
 										번호<span>*</span>
 									</p>
-									<input id="phone" type="text" name="phone" placeholder="전화번호 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+									<input id="phone" type="text" name="memberPhoneNum" placeholder="전화번호 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
 								</div>
 							</div>
 							<div class="col-lg-6" style="max-width: 100%">
@@ -110,12 +110,12 @@ button img {
 									<p>
 										주소<span>*</span>
 									</p>
-									<input type="text" id="post" name="post" placeholder="우편번호" onclick="sample6_execDaumPostcode()" readonly>
+									<input type="text" id="post" name="memberPostNum" placeholder="우편번호" onclick="sample6_execDaumPostcode()" readonly>
 									<input type="button" value="우편번호 찾기" onclick="sample6_execDaumPostcode()" readonly>
 									<br>
-									<input type="text" class="form-control" id="address" name="address" placeholder="주소" readonly>
+									<input type="text" class="form-control" id="address" name="memberAddress1" placeholder="주소" readonly>
 									<input type="text" class="form-control" id="address_plus" name="addressPlus" placeholder="참고항목" readonly>
-									<input type="text" class="form-control" id="address_detail" name="addressDetail" placeholder="상세주소" required>
+									<input type="text" class="form-control" id="address_detail" name="memberAddress2" placeholder="상세주소" required>
 								</div>
 							</div>
 						</div>
@@ -238,9 +238,9 @@ button img {
             merchant_uid : uid, //ovo.getoNum() 오더 pk값 
             name : orderName, //pvo.getPname() 상품 이름 
             amount : cTotalPrice, //
-            buyer_addr : document.getElementById("address").value+" "+document.getElementById("address_detail").value,
-            buyer_name : document.getElementById("name").value, // 세션에 저장된 (로그인한 멤버의 name)mvo.getName()
-            buyer_tel : document.getElementById("phone").value // 멤버 phoneNum
+            buyer_addr : document.getElementById("memberAddress1").value+" "+document.getElementById("memberAddress2").value,
+            buyer_name : document.getElementById("memberName").value, // 세션에 저장된 (로그인한 멤버의 name)mvo.getName()
+            buyer_tel : document.getElementById("memberPhoneNum").value // 멤버 phoneNum
 
          }, function(rsp) { // callback
             if (rsp.success) {
@@ -312,10 +312,10 @@ button img {
                      }
 
                      // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                     document.getElementById('post').value = data.zonecode;
-                     document.getElementById("address").value = addr;
+                     document.getElementById('memberPostNum').value = data.zonecode;
+                     document.getElementById("memberAddress1").value = addr;
                      // 커서를 상세주소 필드로 이동한다.
-                     document.getElementById("address_detail").focus();
+                     document.getElementById("memberAddress2").focus();
                   }
                }).open();
       }

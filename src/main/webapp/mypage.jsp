@@ -115,7 +115,7 @@
 								<hr>
 
 								<li class="mypageli">
-									<div class="mypagedt">고영이 이름</div> <span class="mypagetext">${memberCName}</span> <br>
+									<div class="mypagedt">고영이 이름</div> <span class="mypagetext">${memberCatName}</span> <br>
 								</li>
 								<hr>
 								<li class="mypageli">
@@ -124,11 +124,11 @@
 								</li>
 								<hr>
 								<li class="mypageli">
-									<div class="mypagedt">전화번호</div> <span class="mypagetext">${memberPhone}</span> <br>
+									<div class="mypagedt">전화번호</div> <span class="mypagetext">${memberPhoneNum}</span> <br>
 								</li>
 								<hr>
 								<li class="mypageli">
-									<div class="mypagedt">주소</div> <span class="mypagetext">${memberAddress}</span>
+									<div class="mypagedt">주소</div> <span class="mypagetext">${memberAddress1} ${memberAddress2} ${memberPostNum}</span>
 								</li>
 							</ul>
 						</div>
