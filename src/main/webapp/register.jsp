@@ -300,7 +300,7 @@
          $.ajax({
             type: 'POST',
             url: 'checkDuplication.do',
-            data: {id:id},
+            data: {userId:id},
             success: function(result){
                console.log(result)
                if(id == ""){
@@ -635,7 +635,7 @@ fetch("tos3.jsp") /*해당 경로의 내용 가져옴 */
       $.ajax({
          type: 'POST',
          url: 'checkDuplication.do',
-         data: {phone:phone},
+         data: {phoneNum:phone},
            success: function(result){
               console.log("checkResult: "+result)
                if(result == 1){

@@ -1,5 +1,7 @@
 package com.wan.nss.biz.member;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO selectOne(MemberVO vo) {
 		return memberDAO.selectOne(vo);
+	}
+
+	@Override
+	public ArrayList<MemberVO> selectAll(MemberVO vo) {
+		return memberDAO.selectAll(vo);
 	}
 
 }

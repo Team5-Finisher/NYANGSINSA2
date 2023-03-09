@@ -38,7 +38,7 @@ function list(categoryIn, sortIn, pNumIn, selectPage) {
 	$.ajax({ // ajax로 데이터 가져오기
 		type: 'POST',
 		url: 'getReviewList.do',
-		data: {category:category, sort:sort, pNum:pNum}, // category, sort 담아서 ListController Servlet에 걸리게!
+		data: {pNum:pNum}, // category, sort 담아서 ListController Servlet에 걸리게!
 		dataType: 'json',
 		traditional: 'true',
 		contentType: "application/x-www-form-urlencoded; charset=UTF-8",

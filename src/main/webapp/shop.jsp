@@ -322,7 +322,7 @@
 	<!-- 리스트세팅 -->
 	<script>
 		$(document).ready(function() {
-			list("food", "sellDesc", 1, 0, ${maxPrice});
+			list("all", "sellDesc", 1, 0, ${maxPrice});
 	
 			$.ajax({ // ajax로 데이터 가져오기
 				type : 'POST',

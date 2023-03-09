@@ -24,16 +24,23 @@ public class CartController {
 	private ProductService productService;
 
 	// 장바구니 아이콘 수량 변경
-	@RequestMapping("/getCartCnt.do")
-	protected String getCartCnt(HttpSession session) {
+	@ResponseBody
+	@RequestMapping(value="/getCartCnt.do")
+	public String getCartCnt(HttpSession session) {
 
+		System.out.println("getCartCnt.do 진입");
+		
 		int cartCnt = 0; // 장바구니 상품 개수
+		
 		ArrayList<ProductVO> cList = (ArrayList) session.getAttribute("cList");
+		
 		if (cList != null) { // 장바구니에 상품이 있을 때
 			cartCnt = cList.size();
 		}
-		System.out.println("CartCntController cartCnt: "+cartCnt);
+		
+		System.out.println("CartController cartCnt: "+cartCnt);
 		return Integer.toString(cartCnt); // AJAX 요청 성공시 보내는 데이터
+		
 	}
 	
 	// 장바구니 페이지로 이동

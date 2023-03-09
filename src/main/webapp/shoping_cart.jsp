@@ -54,7 +54,7 @@
 		<div class="humberger__menu__cart">
 			<ul>
 				<li><a href="shopingCart.do">
-						<i class="fa fa-shopping-bag"></i> <span id="cartCnt2">${fn:length(cList)}</span>
+						<i class="fa fa-shopping-bag"></i> <span id="cartCnt2"></span>
 					</a></li>
 			</ul>
 		</div>
@@ -149,7 +149,7 @@
 					<div class="header__cart">
 						<ul>
 							<li><a href="shopingCart.do">
-									<i class="fa fa-shopping-bag"></i> <span id="cartCnt">${fn:length(cList)}</span>
+									<i class="fa fa-shopping-bag"></i> <span id="cartCnt"></span>
 								</a></li>
 						</ul>
 					</div>
@@ -279,6 +279,22 @@
 			console.log("리스트세팅 시작")
 			cList(0, 0);
 			console.log("리스트세팅 완료")
+		})
+		
+		$(document).ready(function() {
+			$.ajax({ // ajax로 데이터 가져오기
+				type : 'POST',
+				url : 'getCartCnt.do',
+				success : function(data) {
+					let cartCnt = '';
+					cartCnt += data; // 장바구니 상품 개수
+					$('#cartCnt').text(cartCnt);
+					$('#cartCnt2').text(cartCnt);
+				},
+				error : function() {
+					alert('error');
+				}
+			})
 		})
 	</script>
 

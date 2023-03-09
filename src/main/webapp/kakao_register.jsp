@@ -78,7 +78,7 @@
 								<div class="field-body">
 									<div class="field">
 										<div class="control">
-											<input type="text" autocomplete="on" name="userName" value="${userName}" class="input" required>
+											<input type="text" autocomplete="on" name="memberName" value="${memberName}" class="input" required>
 										</div>
 										<p class="help">* 이름을 입력하세요.</p>
 									</div>
@@ -89,9 +89,9 @@
 								<div class="field-body">
 									<div class="field">
 										<div class="control">
-											<input type="text" autocomplete="on" name="catName" value="냥숙녀" class="input" required>
-											<input type="hidden" autocomplete="on" name="id" value="${userId}" class="input" required>
-											<input type="hidden" autocomplete="on" name="password" value="${userPw}" class="input" required>
+											<input type="text" autocomplete="on" name="memberCatName" value="냥숙녀" class="input" required>
+											<input type="hidden" autocomplete="on" name="memberId" value="${memberId}" class="input" required>
+											<input type="hidden" autocomplete="on" name="memberPw" value="${memberPw}" class="input" required>
 										</div>
 										<p class="help">* 고양이 이름을 입력하세요.</p>
 									</div>
@@ -102,7 +102,7 @@
 								<div class="field-body">
 									<div class="field">
 										<div class="control">
-											<input type="text" autocomplete="on" class="input" name="phoneNum" placeholder="전화번호 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+											<input type="text" autocomplete="on" class="input" name="memberPhoneNum" placeholder="전화번호 입력" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
 										</div>
 										<p class="help">* 전화번호를 입력하세요.</p>
 									</div>
@@ -125,10 +125,10 @@
 									<div class="field">
 										<div class="control">
 											<input type="button" class="button button-register" style="background: #6667AB; color: white;" value="우편번호 찾기" onclick="sample6_execDaumPostcode()" readonly>
-											<input type="text" id="post" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" placeholder="우편번호" onclick="sample6_execDaumPostcode()" name="postNum" readonly>
-											<input type="text" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" id="address" name="address1" placeholder="주소" readonly>
+											<input type="text" id="post" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" placeholder="우편번호" onclick="sample6_execDaumPostcode()" name="memberPostNum" readonly>
+											<input type="text" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" id="address" name="memberAddress1" placeholder="주소" readonly>
 											<input type="text" class="form-control" id="address_plus" name="addressPlus" placeholder="참고항목" readonly>
-											<input type="text" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" id="address_detail" name="address2" placeholder="상세주소" required>
+											<input type="text" class="form-control" style="margin-bottom: 10px; margin-top: 10px;" id="address_detail" name="memberAddress2" placeholder="상세주소" required>
 										</div>
 									</div>
 								</div>

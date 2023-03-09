@@ -23,7 +23,7 @@ public class MemberController {
 	private MemberService memberService;
 
 	// 로그인 페이지로 이동
-	@RequestMapping(value="/login.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/login.do", method=RequestMethod.GET)
 	public String loginView() {
 		
 		System.out.println("login.do 진입");
@@ -33,7 +33,7 @@ public class MemberController {
 	}
 	
 	// 회원가입 페이지로 이동
-	@RequestMapping(value="/register.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/register.do", method=RequestMethod.GET)
 	public String registerView() {
 		
 		System.out.println("register.do 진입");
@@ -43,7 +43,7 @@ public class MemberController {
 	}
 	
 	// 아이디 찾기 페이지로 이동
-	@RequestMapping(value="/findId.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/findId.do", method=RequestMethod.GET)
 	public String findIdView() {
 		
 		System.out.println("findId.do 진입");
@@ -53,7 +53,7 @@ public class MemberController {
 	}
 	
 	// 비밀번호 찾기 페이지로 이동
-	@RequestMapping(value="/findPw.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/findPw.do", method=RequestMethod.GET)
 	public String findPwView() {
 		
 		System.out.println("findPw.do 진입");
@@ -63,7 +63,7 @@ public class MemberController {
 	}
 	
 	// 회원정보변경 클릭시 비밀번호 확인 페이지로 이동
-	@RequestMapping(value="/checkPassword.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/checkPassword.do", method=RequestMethod.GET)
 	public String checkPasswordView() {
 		
 		System.out.println("checkPassword.do 진입");
@@ -73,7 +73,7 @@ public class MemberController {
 	}
 	
 	// CONTACT 페이지로 이동
-	@RequestMapping(value="/contact.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/contact.do", method=RequestMethod.GET)
 	public String contactView() {
 		
 		System.out.println("contact.do 진입");
@@ -160,8 +160,8 @@ public class MemberController {
 				return null;
 			}
 		}
-		String newPw = (String) request.getParameter("newPassword"); // 새 비밀번호
-		vo.setUserPw(newPw);
+		String memberPwNew = (String) request.getParameter("memberPwNew"); // 새 비밀번호
+		vo.setUserPw(memberPwNew);
 		if (!memberService.update(vo)) { // 업데이트에 실패하면 알림창
 			try {
 				response.setContentType("text/html; charset=utf-8");
@@ -179,10 +179,6 @@ public class MemberController {
 	public String updateMemberProfile(MemberVO vo, HttpServletRequest request, HttpServletResponse response) {
 		
 		System.out.println("updateMember.do 진입");
-
-		String address = request.getParameter("postNum") + request.getParameter("address") + request.getParameter("addressPlus") + request.getParameter("addressDetail"); // 주소
-		
-		vo.setAddress1(address); // 주소를 세팅
 
 		if (!memberService.update(vo)) {
 			try {
@@ -243,9 +239,9 @@ public class MemberController {
 		System.out.println("로그인하려는 회원 정보 ↓");
 		System.out.println(vo);
 		System.out.println();
-		MemberVO member = memberService.selectOne(vo);
+		MemberVO loginMvo = memberService.selectOne(vo);
 
-		if (member == null) { // 로그인 실패시
+		if (loginMvo == null) { // 로그인 실패시
 			try {
 				response.setContentType("text/html; charset=utf-8");
 				PrintWriter out = response.getWriter();
@@ -257,8 +253,9 @@ public class MemberController {
 				return null;
 			}
 		} else { // 로그인 성공시
-			session.setAttribute("memberId", member.getUserId()); // 세션에 로그인한 회원의 아이디, 이름 저장
-			session.setAttribute("memberName", member.getUserName());
+			session.setAttribute("memberId", loginMvo.getUserId()); // 세션에 로그인한 회원의 아이디, 이름 저장
+			session.setAttribute("memberName", loginMvo.getUserName());
+			System.out.println("메인으로 이동");
 			return "main.do"; // 메인으로 이동
 		}
 
@@ -270,19 +267,16 @@ public class MemberController {
 		
 		System.out.println("loginCheck.do 진입");
 
-		MemberVO member = memberService.selectOne(vo);
+		MemberVO loginMvo = memberService.selectOne(vo);
 
-		if (member != null) { // 가입정보가 있으면 메인으로
+		if (loginMvo != null) { // 가입정보가 있으면 메인으로
 			// 이름, 아이디, 패스워드 (id, pw는 고유 번호)
 			// 받아서 회원 정보가 있으면 로그인
-			session.setAttribute("memberId", member.getUserId()); // 세션에 로그인한 회원의 아이디, 이름 저장
-			session.setAttribute("memberName", member.getUserName());
+			session.setAttribute("memberId", loginMvo.getUserId()); // 세션에 로그인한 회원의 아이디, 이름 저장
+			session.setAttribute("memberName", loginMvo.getUserName());
 			return "main.do";
 		} else { // 가입정보가 없으면 카카오 회원가입
-//			request.setAttribute("userName", request.getParameter("userName"));
-//			request.setAttribute("userId", request.getParameter("d"));
-//			request.setAttribute("userPw", request.getParameter("d"));
-			model.addAttribute("data", member);
+			model.addAttribute("data", vo); // 카카오에서 제공한 아이디와 이름이 저장된 MemberVO를 Set
 			return "kakao_register.jsp";
 		}
 
@@ -294,8 +288,8 @@ public class MemberController {
 		
 		System.out.println("findId.do 진입");
 
-		MemberVO member = memberService.selectOne(vo); // id, 이름이 담긴 멤버
-		if (member == null) { // 가입정보가 없는 경우
+		MemberVO loginMvo = memberService.selectOne(vo); // id, 이름이 담긴 멤버
+		if (loginMvo == null) { // 가입정보가 없는 경우
 			try {
 				response.setContentType("text/html; charset=utf-8");
 				PrintWriter out = response.getWriter();
@@ -307,8 +301,8 @@ public class MemberController {
 				return null;
 			}
 		} else { // 가입정보가 있는 경우
-			model.addAttribute("memberId", member.getUserId());
-			model.addAttribute("memberName", member.getUserName());
+			model.addAttribute("memberId", loginMvo.getUserId());
+			model.addAttribute("memberName", loginMvo.getUserName());
 			return "result_find_id.jsp";
 		}
 
@@ -324,8 +318,8 @@ public class MemberController {
 		// 폰 번호로 비밀번호 찾기 버튼 누르면 :
 
 		// mdao에서 해당하는 멤버 가져오고, 아이디만 전달
-		MemberVO member = memberService.selectOne(vo);
-		if (member == null) { // 없는 회원인 경우\
+		MemberVO loginMvo = memberService.selectOne(vo);
+		if (loginMvo == null) { // 없는 회원인 경우\
 			try {
 				response.setContentType("text/html; charset=utf-8");
 				PrintWriter out = response.getWriter();
@@ -337,7 +331,7 @@ public class MemberController {
 				return null;
 			}
 		} else {
-			model.addAttribute("memberId", member.getUserId());
+			model.addAttribute("memberId", loginMvo.getUserId());
 			return "result_find_pw.jsp";
 		}
 
@@ -349,9 +343,9 @@ public class MemberController {
 
 		System.out.println("CheckPw.do 진입");
 
-		MemberVO resMvo = memberService.selectOne(vo); // id, pw가 일치하는 회원이 있는경우만 not null
+		MemberVO loginMvo = memberService.selectOne(vo); // id, pw가 일치하는 회원이 있는경우만 not null
 
-		if (resMvo == null) { // 비밀번호가 일치하지 않으면, 알림창 뜨고 뒤로 돌아가야 함
+		if (loginMvo == null) { // 비밀번호가 일치하지 않으면, 알림창 뜨고 뒤로 돌아가야 함
 			try {
 				response.setContentType("text/html; charset=utf-8"); // 알림창 인코딩
 				PrintWriter out = response.getWriter();
@@ -365,9 +359,11 @@ public class MemberController {
 		} else {
 			// 비밀번호가 일치한다면 전달 :
 			// 1. 프로필 사진, 2. 고양이 이름, 3. 전화번호, 4. 주소
-			model.addAttribute("cName", resMvo.getCatName());
-			model.addAttribute("phoneNum", resMvo.getPhoneNum());
-			model.addAttribute("address", resMvo.getAddress1());
+			model.addAttribute("memberCatName", loginMvo.getCatName());
+			model.addAttribute("memberPhoneNum", loginMvo.getPhoneNum());
+			model.addAttribute("memberPostNum", loginMvo.getPostNum());
+			model.addAttribute("memberAddress1", loginMvo.getAddress1());
+			model.addAttribute("memberAddress1", loginMvo.getAddress2());
 			return "profile.jsp"; // 회원정보변경 페이지로 진행
 		}
 		
@@ -390,9 +386,13 @@ public class MemberController {
 				return null;
 			}
 		} else {
-			MemberVO member = memberService.selectOne(vo); // 로그인한 회원 VO를 member에 저장
+			MemberVO loginMvo = memberService.selectOne(vo); // 로그인한 회원 VO를 member에 저장
 			
-			model.addAttribute("data", member);
+			model.addAttribute("memberCatName", loginMvo.getCatName());
+			model.addAttribute("memberPhoneNum", loginMvo.getPhoneNum());
+			model.addAttribute("memberPostNum", loginMvo.getPostNum());
+			model.addAttribute("memberAddress1", loginMvo.getAddress1());
+			model.addAttribute("memberAddress1", loginMvo.getAddress2());
 
 			return "mypage.jsp";
 		}

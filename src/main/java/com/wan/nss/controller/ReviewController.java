@@ -6,11 +6,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.wan.nss.biz.product.ProductService;
 import com.wan.nss.biz.product.ProductVO;
 import com.wan.nss.biz.review.ReviewDAO;
@@ -112,6 +119,16 @@ public class ReviewController {
 		}
 
 		return "redirect:review_manage.jsp"; //null, forward 상황
+	}
+	
+	//ReviewListController
+	@ResponseBody
+	@RequestMapping(value="getReviewList.do", method = RequestMethod.POST)
+	public JsonArray getReviewList(ReviewVO rvo) {
+		ArrayList<ReviewVO> list = reviewService.selectAll(rvo); // ajax로 받은 pNum을 selectAll (리뷰리스트 결과)
+		JsonArray datas = new Gson().toJsonTree(list).getAsJsonArray(); // JsonArry로 변경하여 반환
+		
+		return datas;
 	}
 
 

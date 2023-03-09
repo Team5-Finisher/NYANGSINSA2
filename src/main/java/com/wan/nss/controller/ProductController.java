@@ -8,18 +8,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.wan.nss.biz.board.BoardService;
 import com.wan.nss.biz.board.BoardVO;
 import com.wan.nss.biz.common.Crawling;
 import com.wan.nss.biz.image.ImageService;
 import com.wan.nss.biz.image.ImageVO;
-
 import com.wan.nss.biz.product.ProductService;
 import com.wan.nss.biz.product.ProductVO;
 import com.wan.nss.biz.review.ReviewService;
@@ -105,7 +110,7 @@ public class ProductController {
 		return null;// nullPointException 내서 페이지 이동하려고
 	}
 
-	// 상품세부페이지 이동
+	// 상품세부페이지 이동: 추후 pvo2 지울 예정
 	@RequestMapping(value = "/shopDetails.do")
 	public String shopDetailView(ProductVO pvo, ProductVO pvo2, ImageVO ivo, ReviewVO rvo, Model model) {
 		System.out.println("pNum: " + pvo.getpNum());
@@ -113,12 +118,18 @@ public class ProductController {
 		ProductVO resPvo = new ProductVO(); // 현재 pvo
 		resPvo = productService.selectOne(pvo); // 상세페이지에서 보여줄 상품num을 selectAll에 돌린 결과를 resPvo에 저장
 
+		//상세이미지 불러오기
+		ivo.setImageNum(pvo.getpNum());
+		imageService.selectOne(ivo);
+		resPvo.setImageName2(ivo.getImageName());
+
 		// 관련상품 목록 가져오기 조건 : pName==null, 카테고리 nn, 정렬 nn
 		pvo.setCategory(resPvo.getCategory()); // 관련상품정보를 가져오기 위해 카테고리 set
 		pvo.setSort("sellDesc"); // 관련상품 가져오기 위해 정렬 set
 		pvo.setSearchLowPrice(0);
 		pvo2.setpSearchCondition("max"); // selectOne에서 인자로 쓸 것
 		pvo.setSearchHighPrice(productService.selectOne(pvo2).getPrice());
+
 
 		ArrayList<ReviewVO> rList = reviewService.selectAll(rvo); // 리뷰 리스트
 		ArrayList<ProductVO> pList = productService.selectAll(pvo); // 관련 상품 리스트
@@ -129,15 +140,6 @@ public class ProductController {
 
 		return "shop_details.jsp";
 	}
-
-	/*
-	 * 안 씀 (관리자) 상품 추가 기능
-	 * 
-	 * @RequestMapping(value="/createProduct.do", method=RequestMethod.POST) public
-	 * String insertProduct(ProductVO pvo, Model model) {
-	 * productService.insert(pvo); //카테고리, 상품 이름, 가격, 재고, 설명 추가 // 2. 상품 이미지 올리기는 추후
-	 * 구현 예정: 대표이미지(pImgUrl), 상세 이미지(pImgUrl2) return "product_manage_insert.jsp"; }
-	 */
 
 	// (관리자)상품 수정 기능: 해당 상품 관리 페이지에서 "수정" 버튼 클릭 시 실제 수정
 	@RequestMapping(value = "/updateProduct.do", method = RequestMethod.POST)
@@ -188,6 +190,50 @@ public class ProductController {
 		model.addAttribute("bList", boardService.selectAll(bvo));
 
 		return "search_result.jsp";
+	}
+
+	//ListController
+	@ResponseBody
+	@RequestMapping(value="/getList.do", method = RequestMethod.POST)
+	public JsonArray sendList(ProductVO pvo, Model model) {
+
+		System.out.println("getList.do 진입");
+
+		System.out.println("ListController 실행 조건: ");
+		System.out.println("pSearchCondition: " + pvo.getpSearchCondition());
+		System.out.println("category: " + pvo.getCategory());
+		System.out.println("sort: " + pvo.getSort());
+		System.out.println("searchLowPrice: " + pvo.getSearchLowPrice());
+		System.out.println("searchHighPrice: " + pvo.getSearchHighPrice());
+
+		// 뷰에서 넘어온 조건으로 상품리스트 가져오기
+		ArrayList<ProductVO> list = productService.selectAll(pvo); // 결과 상품 목록
+
+		// 뷰에서 전체상품 최고가 가져온 후 response에 세팅
+		pvo.setpSearchCondition("max");
+		model.addAttribute("maxPrice", productService.selectOne(pvo).getPrice());
+
+		JsonArray datas = new Gson().toJsonTree(list).getAsJsonArray(); // JsonArry로 변경하여 반환
+
+		return datas;
+	}
+
+	//SearchListController
+	@ResponseBody
+	@RequestMapping(value="getSearchList.do", method = RequestMethod.POST)
+	public JsonArray getSearchList(ProductVO pvo, ProductVO pvo2, JSONArray jsonArray, Model model) {
+		// ajax가 보낸 searchContent
+		System.out.println("searchContent: "+pvo.getpSearchContent());
+		
+		// ajax()로 넘어온 category, sort를 세팅한 pvo를 가지고 selectAll 
+		pvo.setSearchLowPrice(0);
+		pvo2.setpSearchCondition("max"); // selectOne에서 인자로 쓸 것
+		pvo.setSearchHighPrice(productService.selectOne(pvo2).getPrice());
+		ArrayList<ProductVO> list = productService.selectAll(pvo); // 상품 검색 결과
+		
+		JsonArray datas = new Gson().toJsonTree(list).getAsJsonArray(); 
+		
+		return datas;
 	}
 
 }

@@ -103,7 +103,7 @@
       $.ajax({
          type: 'POST',
          url: 'checkDuplication.do',
-         data: {id:id},
+         data: {userId:id},
          success: function(result){
             if(result==1){
                $('#outputId').html('사용가능'); // $('id 속성이 checkmsg인 요소')에 텍스트 추가
