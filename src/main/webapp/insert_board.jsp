@@ -72,7 +72,7 @@
 					</div>
 				</div>
 			</div>
-			<form action="writeBoard.do" method="POST">
+			<form action="insertBoard.do" method="POST">
 				<div class="row">
 					<div class="row1" style="width: 10%; margin-left: 15px">
 						<div style="padding-bottom: 45px;">
