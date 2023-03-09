@@ -183,7 +183,7 @@
 	<!-- Blog Section End -->
 
 	<!-- Footer Section Begin -->
-	<nss:footer />
+	<nss:footer /> 
 	<!-- Footer Section End -->
 
 	<!-- Js Plugins -->
