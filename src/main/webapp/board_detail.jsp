@@ -44,6 +44,9 @@
 				${board.boardTitle}
 				<br>
 				<div id="writer">[작성자 : ${board.userId}]</div>
+				<c:if test="${board.userId == member.userId}">
+					<a href ="updateBoardView.do?boardNum=${board.boardNum}">수정하기</a>
+				</c:if>
 			</div>
 			<hr>
 			<ul id="boardInfo">

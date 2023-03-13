@@ -3,9 +3,9 @@ package com.wan.nss.biz.image;
 import java.util.ArrayList;
 
 public interface ImageService {
-	public ArrayList<ImageVO> selectAll(ImageVO pvo);
-	public ImageVO selectOne(ImageVO pvo);
-	public boolean insert(ImageVO pvo);
-	public boolean update(ImageVO pvo);
-	public boolean delete(ImageVO pvo);
+	public ArrayList<ImageVO> selectAll(ImageVO ivo);
+	public ImageVO selectOne(ImageVO ivo);
+	public boolean insert(ImageVO ivo);
+	public boolean update(ImageVO ivo);
+	public boolean delete(ImageVO ivo);
 }

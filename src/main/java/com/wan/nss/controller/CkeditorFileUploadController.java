@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class CkeditorFileUploadController {
 	@RequestMapping("/fileupload.do")
 	@ResponseBody
 	public String fileUpload(HttpServletRequest request, HttpServletResponse response,
-			MultipartHttpServletRequest multiFile) throws IOException {
+			MultipartHttpServletRequest multiFile, MultipartFile upload) throws IOException {
 	
 		//Json 객체 생성
 		JsonObject json = new JsonObject();
@@ -44,19 +45,20 @@ public class CkeditorFileUploadController {
 						//파일 이름 설정
 						String fileName = file.getName();
 						System.out.println("fileName: "+fileName);
+						//바이트 타입설정
+						byte[] bytes;
 						//파일을 바이트 타입으로 변경
-						byte[] bytes = file.getBytes();
+						bytes = file.getBytes();
 						//파일이 실제로 저장되는 경로 
-						String projectPath = request.getSession().getServletContext().getRealPath("/"); // 파일 경로 ".../webapp/" 까지
-						projectPath = projectPath.substring(0, projectPath.indexOf(".metadata"));
-						String uploadPath = projectPath + "NYANGSINSA2/src/main/webapp/img/boardimg";
+						String uploadPath = request.getServletContext().getRealPath("/images/boardimages/");
+						
 						System.out.println("uploadPath: "+uploadPath);
 						//저장되는 파일에 경로 설정
 						File uploadFile = new File(uploadPath);
 						System.out.println("uploadFile: "+uploadFile);
 						if (!uploadFile.exists()) {
 							uploadFile.mkdirs();
-							System.out.println("없는 경로이므로 파일 생성");
+							System.out.println("/images/boardimages 파일 생성");
 						}
 						//파일이름을 랜덤하게 생성
 						fileName = UUID.randomUUID().toString();
@@ -72,15 +74,14 @@ public class CkeditorFileUploadController {
 						response.setContentType("text/html");
 						
 						//파일이 연결되는 Url 주소 설정
-//						String fileUrl = request.getContextPath() + "/images/boardimages/" + fileName;
-						String fileUrl = uploadPath;
-						System.out.println("fileUrl "+fileUrl);
+						String fileUrl = request.getContextPath() + "/images/boardimages/" + fileName;
 						
 						//생성된 jason 객체를 이용해 파일 업로드 + 이름 + 주소를 CkEditor에 전송
 						json.addProperty("uploaded", 1);
 						json.addProperty("fileName", fileName);
 						json.addProperty("url", fileUrl);
 						printWriter.println(json);
+						
 					} catch (IOException e) {
 						e.printStackTrace();
 					} finally {
